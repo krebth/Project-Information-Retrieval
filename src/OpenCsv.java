@@ -41,7 +41,7 @@ public class OpenCsv {
 	private AnalyzeText analyzeTXT;
 	private ArrayList<Song> allSongs;
 	private String[] inputFields;
-	private String[] inputTerms;
+	private ArrayList<String> inputTerms;
 	private String[] inputTermsWithoutStem;
 	
 	public void openCsv(File csvFile) throws IOException, java.text.ParseException {
@@ -111,17 +111,21 @@ public class OpenCsv {
     		inputFields[i] = inputFields[i].toLowerCase();
     	}
     	
-    	inputTerms = terms.split(",");
+    	String[] array = terms.split(",");
+    	inputTerms = new ArrayList<>(Arrays.asList(array));
+    			
     	inputTermsWithoutStem = terms.split(",");
     	
     	PorterStemmer stemmer = new PorterStemmer();
-    	for (int i = 0; i < inputTerms.length; i++) {
-    		if (!isDate(inputTerms[i])) {
-    			inputTerms[i] = inputTerms[i].toLowerCase();
+    	int listSize = inputTerms.size();
+    	for (int i = 0; i < listSize; i++) {
+    		if (!isDate(inputTerms.get(i))) {
+    			inputTerms.set(i, inputTerms.get(i).toLowerCase());
     			inputTermsWithoutStem[i] = inputTermsWithoutStem[i].toLowerCase();
-        		stemmer.setCurrent(inputTerms[i]);
+        		stemmer.setCurrent(inputTerms.get(i));
             	stemmer.stem();
-            	inputTerms[i] = stemmer.getCurrent();
+            	inputTerms.add(stemmer.getCurrent());
+            	System.out.println(stemmer.getCurrent() + " " + inputTerms.get(i));
     		}
     	}
     			
@@ -146,7 +150,7 @@ public class OpenCsv {
             int num = Integer.parseInt(numStr); 
             System.out.println(num);
             Song song = allSongs.get(num);
-            allResults.add(boldMatchingWords(song, inputTermsWithoutStem, inputFields));
+            allResults.add(boldMatchingWords(song, inputTerms, inputFields));
         }
     	
         System.out.println("Done!");
@@ -196,7 +200,7 @@ public class OpenCsv {
 	}
 
 	
-	public ArrayList<String> boldMatchingWords(Song song, String[] values, String[] fields) {
+	public ArrayList<String> boldMatchingWords(Song song, ArrayList<String> values, String[] fields) {
 		ArrayList<String> result = new ArrayList<String>();
 	    for (String field: fields) {
 	    	for (String value: values) {
@@ -282,14 +286,15 @@ public class OpenCsv {
 		return inputFields;
 	}
 	
-	public String[] getTerms() {
+	public List<String> getTerms() {
 		return inputTerms;
 	}
 
 	
 	public static void main(String[] args) throws IOException, ParseException, java.text.ParseException {
+		File newFile = new File("./files/one.csv");
 		OpenCsv open = new OpenCsv();
-		//open.openCsv();
+		open.openCsv(newFile);
 		open.read("Artist","Ariana Grande");
 	}
 }

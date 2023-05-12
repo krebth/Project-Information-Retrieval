@@ -198,7 +198,7 @@ public class SearchEngineGUI implements ActionListener {
         }
     }
     
-    public ArrayList<ArrayList<String>> boldMatchingWords(ArrayList<ArrayList<String>> allResults, String[] fields, String []terms) {
+    public ArrayList<ArrayList<String>> boldMatchingWords(ArrayList<ArrayList<String>> allResults, String[] fields, List<String> terms) {
     	for (int i = 0; i < allResults.size(); i++) {
     		for (String field: fields) {
     	    	for (String term: terms) {
