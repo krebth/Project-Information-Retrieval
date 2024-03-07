@@ -63,6 +63,6 @@ check and correct any spelling mistakes during the search he/she has made.
 In case the user does not fill in a search field (fields , value) the search
 will be completed normally without any problem. Just as expected nothing will be displayed. The user has the possibility
 to change the already selected file (file -> open) and search in another one.
-**Finally we have to point out that the Fields and Values fields must be separated by commas.
+**Finally we have to point out that the Fields and Values fields must be separated by commas.**
 
 
